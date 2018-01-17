@@ -1,0 +1,7 @@
+<!--
+ - Created by praveen on 12/27/17.
+ -->
+
+<aura:event type="COMPONENT" description="Evt_RemoveProdSchRow">
+    <aura:attribute name="rowIndex" type="String"/>
+</aura:event>

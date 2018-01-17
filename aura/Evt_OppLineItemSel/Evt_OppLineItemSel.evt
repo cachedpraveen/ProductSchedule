@@ -1,0 +1,8 @@
+<!--
+ - Created by praveen on 11/22/17.
+ -->
+
+<aura:event type="COMPONENT" description="Evt_OppLineItemSel">
+    <aura:attribute name="OLI" type="OpportunityLineItem"/>
+    <aura:attribute name="pageBlock" type="String"/>
+</aura:event>

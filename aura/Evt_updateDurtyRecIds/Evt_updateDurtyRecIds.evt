@@ -1,0 +1,7 @@
+<!--
+ - Created by praveen on 12/19/17.
+ -->
+
+<aura:event type="COMPONENT" description="Evt_updateDurtyRecIds">
+    <aura:attribute name="recordId" type="Integer" description="Use For Durty Rec" />
+</aura:event>

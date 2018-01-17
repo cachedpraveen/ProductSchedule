@@ -1,0 +1,20 @@
+<!--
+ - Created by praveen on 11/22/17.
+ -->
+
+<aura:component description="OppProductSearchResult">
+    <aura:attribute type="OpportunityLineItem" name="OLI"/>
+    <aura:registerEvent name="varOLISelEvent" type="c:Evt_OppLineItemSel"/>
+
+        <li role="presentation">
+        <span class="slds-lookup__item-action slds-media slds-media--center" id="lookup-option-350" role="option">
+         <div class="slds-media__body">
+          <div class="slds-input-has-icon slds-input-has-icon--right">
+            <c:svg class="slds-input__icon" xlinkHref="{!$Resource.SLDS24 + '/assets/icons/standard-sprite/svg/symbols.svg#product'}" />
+            <div class="slds-lookup__result-text"><a onclick="{!c.selectedOppLineItem}">{!v.OLI.Product2.Name} -- {!v.OLI.Product2.KOR_ASIN__c}  </a></div>
+          </div>
+        </div>
+        </span>
+        </li>
+
+</aura:component>

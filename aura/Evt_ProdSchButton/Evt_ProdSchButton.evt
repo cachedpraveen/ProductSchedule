@@ -1,0 +1,10 @@
+<!--
+ - Created by praveen on 12/28/17.
+ -->
+
+<aura:event type="COMPONENT" description="Evt_ProdSchButton">
+    <aura:attribute name="nextBtnDis" type="Boolean"/>
+    <aura:attribute name="backBtnDis" type="Boolean"/>
+    <aura:attribute name="saveBtnDis" type="Boolean"/>
+    <aura:attribute name="pageBlock" type="String"/>
+</aura:event>

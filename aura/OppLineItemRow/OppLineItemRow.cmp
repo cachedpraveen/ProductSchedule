@@ -1,0 +1,25 @@
+<!--
+ - Created by praveen on 12/28/17.
+ -->
+
+<aura:component description="OppLineItemRow">
+    <aura:attribute name="oppLineItem" type="OpportunityLineItem"/>
+    <aura:attribute name="selectedOLI" type="OpportunityLineItem"/>
+
+    <aura:registerEvent name="varOLISelEvent" type="c:Evt_OppLineItemSel"/>
+
+    <tr class="slds-text-title_caps">
+        <td>
+            <ui:inputRadio text = "{!v.oppLineItem}" change="{!c.selectOppLine}" value="{! equals(v.oppLineItem.Id, v.selectedOLI.Id)}"/>
+        </td>
+        <td>
+            <ui:outputText value="{!v.oppLineItem.Product2.Name}"/>
+        </td>
+        <td>
+            <ui:outputText value="{!v.oppLineItem.Product2.ProductCode}"/>
+        </td>
+        <td>
+            <ui:outputText value="{!v.oppLineItem.Quantity}"/>
+        </td>
+    </tr>
+</aura:component>

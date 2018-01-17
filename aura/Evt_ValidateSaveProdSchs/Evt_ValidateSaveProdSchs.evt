@@ -1,0 +1,8 @@
+<!--
+ - Created by praveen on 11/25/17.
+ -->
+
+<aura:event type="COMPONENT" description="Evt_ValidateSaveProdSchs">
+    <aura:attribute type="boolean" default="false" name="validateSave"/>
+    <aura:attribute name="saveBtnDis" type="Boolean"/>
+</aura:event>

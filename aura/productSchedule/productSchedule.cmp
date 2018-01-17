@@ -1,0 +1,59 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader">
+        <style>
+    .cuf-content {
+    padding: 0 0rem !important;
+    }
+    .slds-p-around--medium {
+    padding: 0rem !important;
+    }
+    .slds-modal__content {
+    overflow-y: hidden !important;
+    height: unset !important;
+    max-height: unset !important;
+    }
+    .slds-modal__container {
+        width: 90%;
+        max-width: none;
+        min-width: 640px;
+    }
+    .THIS.slds-spinner_container {
+        z-index: 10000;
+        position: fixed;
+    }
+</style>
+    <aura:attribute name="selectedOLI" type="OpportunityLineItem" default="{}" description="Use,for store SELECTED sObject Record"/>
+    <aura:attribute name="oppId" type="String"/>
+
+    <aura:attribute name="backBtnDis" default="true" type="Boolean"/>
+    <aura:attribute name="nextBtnDis" default="true" type="Boolean"/>
+    <aura:attribute name="finishBtnDis" default="true" type="Boolean"/>
+    <aura:attribute name="pageBlock" type="String"/>
+    <aura:attribute name="spinner" type="boolean" default="false"/>
+
+    <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:handler name="varOLISelEvent" event="c:Evt_OppLineItemSel" action="{!c.handleSelComEvent}"/>
+    <aura:handler name="updateProdSchBtn" event="c:Evt_ProdSchButton" action="{!c.updateProdSchBtn}"/>
+    <!--loading spinner start... style=Brand Medium (blue dots)-->
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+
+    <div class="slds-col modal-header slds-modal__header">
+        <h2 class="title slds-text-heading&#45;&#45;medium">Product Schedule</h2>
+    </div>
+    <div class="slds-col modal-body scrollable slds-modal__content slds-p-around&#45;&#45;medium" style="overflow-y: auto !important">
+        <div class="multiAddWrapper">
+            <p><div aura:id="opp-prod" class="slds-show"><c:OppProductSearch oppId = "{!v.oppId}" selectedOLI="{!v.selectedOLI}"/></div></p>
+            <p><div aura:id="prod-sch" class="slds-show"><c:ProductSchTable selectedOLI="{!v.selectedOLI}" backBtnDis="{!v.backBtnDis}" nextBtnDis="{!v.nextBtnDis}" finishBtnDis="{!v.finishBtnDis}" pageBlock="{!v.pageBlock}"/></div></p>
+        </div>
+    </div>
+</aura:component>

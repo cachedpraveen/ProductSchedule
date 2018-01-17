@@ -1,0 +1,112 @@
+<!--
+ - Created by praveen on 11/23/17.
+ -->
+
+<aura:component description="ProductSchTable" controller="ProductScheduleController">
+
+    <aura:attribute name="prodSchList" type="Opportunity_LineItem_Schedule_Shadow__c[]"/>
+    <aura:attribute name="oppLineItems" type="OpportunityLineItem[]"/>
+    <aura:attribute name="selectedOLI" type="OpportunityLineItem" default="{}" description="Use,for store SELECTED sObject Record"/>
+
+    <aura:attribute name="backBtnDis" default="true" type="Boolean"/>
+    <aura:attribute name="nextBtnDis" default="true" type="Boolean"/>
+    <aura:attribute name="finishBtnDis" default="true" type="Boolean"/>
+    <aura:attribute name="pageBlock" type="String"/>
+
+    <aura:attribute name="messageType" type="String"/>
+    <aura:attribute name="message" type="String"/>
+    <aura:attribute name="dutryRecIds" type="Set" default="[]"/>
+    <aura:attribute name="prodName" type="String"/>
+    <aura:attribute name="oppId" type="String"/>
+
+    <aura:registerEvent name="updateProdSchBtn" type="c:Evt_ProdSchButton"/>
+
+    <aura:handler name="change" value="{!v.selectedOLI}" action="{!c.handleSelOLIEvent}"/>
+    <aura:handler name="updateProdSchList" event="c:Evt_UpdateProdSchList" action="{!c.handleSelOLIEvent}"/>
+    <aura:handler name="validateSaveProd" event="c:Evt_ValidateSaveProdSchs" action="{!c.validateSave}"/>
+    <aura:handler name="updateDurtyRecIds" event="c:Evt_updateDurtyRecIds" action="{!c.updateDurtyRecIds}"/>
+    <aura:handler name="removeProdSchRow" event="c:Evt_RemoveProdSchRow" action="{!c.removeRow}"/>
+    <aura:handler name="init" action="{!c.init}" value="{!this}" />
+
+    <aura:renderIf isTrue="{! equals(v.pageBlock, 'prodSchItems')}">
+    <div class="slds-page-header">
+        <c:MessageComponent type="{!v.messageType}" message="{!v.message}" />
+        <h1 class="slds-page-header__title">Create Multiple Schedule, With Add/Delete Rows Dynamically</h1>
+    </div>
+    </aura:renderIf>
+    <!--Table Part-->
+    <!--<div style="overflow-y: scroll; height:400px;">-->
+    <!--<div class="slds-card__body" style="overflow-y: scroll; height:200px;">-->
+    <div class="slds-card__body" style="overflow-y: scroll; height:200px;">
+        <section class="slds-card__body">
+            <aura:renderIf isTrue="{! equals(v.pageBlock, 'prodSchItems')}">
+            <table class="slds-table slds-table--bordered">
+                <thead>
+                <tr class="slds-text-title_caps">
+                    <th scope="col">
+                        <div class="slds-truncate">S.No</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Product Name">Product Name</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Quantity">Quantity</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="Date">Date</div>
+                    </th>
+                        <th scope="col">
+                            <a onclick="{!c.addRow}">
+                                <lightning:icon iconName="utility:add" class="slds-icon slds-icon_small" size="small" alternativeText="add"/>
+                                <span class="slds-assistive-text">Add Icon</span>
+                            </a>
+                        </th>
+                </tr>
+                </thead>
+                <tbody>
+                <aura:if isTrue="{! !empty(v.prodSchList)}">
+                    <aura:iteration items="{!v.prodSchList}" var="item" indexVar="index">
+                       <c:ProductSchRow prodSchItem="{!item}" prodName="{!v.prodName}" rowIndex="{!index}" />
+                    </aura:iteration>
+                </aura:if>
+                </tbody>
+            </table>
+                <aura:set attribute="else">
+                <table class="slds-table slds-table--bordered">
+                    <thead>
+                    <tr class="slds-text-title_caps">
+                        <th scope="col">
+
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Product Name">Product Name</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="ASIN">ASIN</div>
+                        </th>
+                        <th scope="col">
+                            <div class="slds-truncate" title="Quantity">Quantity</div>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <aura:if isTrue="{! not(empty(v.oppLineItems))}">
+                        <aura:iteration items="{!v.oppLineItems}" var="item" indexVar="index">
+                            <c:OppLineItemRow oppLineItem="{!item}" selectedOLI="{!v.selectedOLI}"/>
+                        </aura:iteration>
+                    </aura:if>
+                    </tbody>
+                </table>
+                </aura:set>
+            </aura:renderIf>
+           
+        </section>
+    </div>
+
+    <br/>
+    <div class="slds-col modal-footer slds-modal__footer">
+        <lightning:button variant="brand" label="Back" onclick="{!c.backClick }" disabled="{!v.backBtnDis}"/>
+        <lightning:button variant="brand" label="Next" onclick="{!c.nextClick }" disabled="{!v.nextBtnDis}"/>
+        <lightning:button variant="brand" label="Save" onclick="{!c.Save }" disabled="{!v.finishBtnDis}"/>
+    </div>
+</aura:component>

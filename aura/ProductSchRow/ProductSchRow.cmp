@@ -1,0 +1,79 @@
+<!--
+ - Created by praveen on 11/23/17.
+ -->
+
+<aura:component description="ProductSchRow" implements="force:hasRecordId">
+    <aura:attribute name="prodSchItem" type="Opportunity_LineItem_Schedule_Shadow__c"/>
+    <aura:attribute name="prodName" type="String"/>
+    <aura:attribute name="rowIndex" type="String"/>
+    <aura:attribute name="pastDue" type="boolean" default="false"/>
+
+    <aura:attribute name="recordError" type="String" access="private"/>
+    <aura:registerEvent name="validateSaveProd" type="c:Evt_ValidateSaveProdSchs"/>
+    <aura:registerEvent name="updateDurtyRecIds" type="c:Evt_updateDurtyRecIds"/>
+    <aura:registerEvent name="updateSaveBtn" type="c:Evt_ProdSchButton"/>
+    <aura:registerEvent name="updateProdSchList" type="c:Evt_UpdateProdSchList"/>
+    <aura:registerEvent name="removeProdSchRow" type="c:Evt_RemoveProdSchRow"/>
+
+    <aura:handler name="init" action="{!c.init}" value="{!this}" />
+    <!-- Table Row -->
+
+    <force:recordData aura:id="recordHandler"
+      recordId="{!v.prodSchItem.Id}" fields="Id" targetError="{!v.recordError}" recordUpdated="{!c.handleRecordUpdated}" />
+    <!-- Display Lightning Data Service errors, if any -->
+    <aura:if isTrue="{!not(empty(v.recordError))}">
+        <div class="recordError">
+            <ui:message title="Error" severity="error" closable="true">
+                    {!v.recordError}
+            </ui:message>
+        </div>
+    </aura:if>
+    <tr class="slds-text-title_caps">
+        <td>
+                {!v.rowIndex + 1}
+        </td>
+        <td>
+            <aura:if isTrue="{! !empty(v.prodSchItem.Product__r.Name)}">
+                <ui:outputText value="{!v.prodSchItem.Product__r.Name}"/>
+                <aura:set attribute="else">
+                    <ui:outputText value="{!v.prodName}"/>
+                </aura:set>
+            </aura:if>
+        </td>
+        <td>
+            <ui:inputNumber class="slds-input" value="{!v.prodSchItem.Quantity_Without_Probability__c}" updateOn="keyup" keyup="{!c.validateRow}" aura:id="prod_Sch_Quantity" disabled="{!v.pastDue}"/>
+        </td>
+        <td>
+            <ui:inputDate class="slds-input" value="{!v.prodSchItem.Date__c}" updateOn="change" change="{!c.validateRow}" displayDatePicker="true" aura:id="prod_Sch_Date" disabled="{!v.pastDue}"/>
+        </td>
+        <td>
+            <!-- conditionally Display Add or Delete Icons
+                 if rowIndex is 0 then show Add New Row Icon else show delete Icon
+             -->
+            <aura:renderIf isTrue="{! and(not(v.pastDue), v.prodSchItem.Id)}">
+            <a onclick="{!c.handleDeleteRecord}">
+                <lightning:icon variant="error" iconName="utility:delete" class="slds-icon slds-icon_small" size="small" alternativeText="icon"/>
+                <span class="slds-assistive-text">Delete Icon</span>
+            </a>
+            <!--<aura:if isTrue="{!v.rowIndex == 0}">
+                <a onclick="{!c.AddNewRow}">
+                    <lightning:icon iconName="utility:add" class="slds-icon slds-icon_small" size="small" alternativeText="add"/>
+                    <span class="slds-assistive-text">Add Icon</span>
+                </a>
+                <aura:set attribute="else">
+                    <a onclick="{!c.removeRow}">
+                        <lightning:icon variant="error" iconName="utility:delete" class="slds-icon slds-icon_small" size="small" alternativeText="icon"/>
+                        <span class="slds-assistive-text">Delete Icon</span>
+                    </a>
+                </aura:set>
+            </aura:if>-->
+            </aura:renderIf>
+            <aura:renderIf isTrue="{! not(v.prodSchItem.Id)}">
+                <a onclick="{!c.removeRow}">
+                    <lightning:icon variant="error" iconName="utility:delete" class="slds-icon slds-icon_small" size="small" alternativeText="icon"/>
+                    <span class="slds-assistive-text">Delete Icon</span>
+                </a>
+            </aura:renderIf>
+        </td>
+    </tr>
+</aura:component>

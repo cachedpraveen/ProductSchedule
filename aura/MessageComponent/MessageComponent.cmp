@@ -1,0 +1,16 @@
+<!--
+ - Created by praveen on 11/25/17.
+ -->
+
+<aura:component access="global" description="MessageComponent">
+    <aura:attribute name="message" description="Message content, can be HTML" type="String"
+                    default="Message from MessageComponent.cmp"/>
+    <aura:attribute name="type" description="Message type, can be error/warning/info/success" type="String"
+                    default="info"/>
+    <div class="{!'slds-box slds-theme–alert-texture slds-theme--'+v.type}">
+        <lightning:icon iconName="{! 'utility:'+ v.type }" size="medium" alternativeText="{!v.type}" Class="iconContainer"/>&nbsp;
+            <span class="slds-text-body–regular">
+                <aura:unescapedHtml value="{!v.message}"/>
+            </span>
+    </div>
+</aura:component>
